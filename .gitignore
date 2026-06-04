@@ -1,0 +1,17 @@
+# Local .terraform directories (테라폼 플러그인 임시 폴더)
+**/.terraform/*
+
+# .tfstate files (테라폼이 기억하는 현재 인프라 상태 파일 - 유출 위험)
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Variables files (비밀번호가 들어갈 수 있는 변수 파일 차단)
+*.tfvars
+*.tfvars.json
+
+# Override files
+override.tf
+override.tf.json
