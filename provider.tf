@@ -2,7 +2,6 @@ terraform {
   required_providers {
     openstack = {
       source  = "terraform-provider-openstack/openstack"
-      version = "~> 1.5.0" # 오픈스택 연동용 플러그인
     }
   }
 }

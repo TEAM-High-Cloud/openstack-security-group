@@ -1,10 +1,9 @@
 # ==========================================
-# 1. 기본 관리용 보안 그룹 (Shared)
+# 1. 기본 관리용 보안 그룹 (Admin 권한으로 전역 공유)
 # ==========================================
 resource "openstack_networking_secgroup_v2" "common_mgmt" {
   name        = "common-mgmt-sg"
   description = "[Essential] Allows SSH(22) and Ping(ICMP) for remote management."
-  shared      = true # 모든 프로젝트의 유저가 공통으로 사용할 수 있도록 전역 공유!
 }
 
 # 1-1. SSH (22번 포트) 허용 규칙
@@ -29,12 +28,11 @@ resource "openstack_networking_secgroup_rule_v2" "mgmt_ping" {
 
 
 # ==========================================
-# 2. 웹 서비스 전용 보안 그룹 (Shared)
+# 2. 웹 서비스 전용 보안 그룹 (Admin 권한으로 전역 공유)
 # ==========================================
 resource "openstack_networking_secgroup_v2" "web_traffic" {
   name        = "web-traffic-sg"
   description = "[Web] Open HTTP(80) and HTTPS(443) ports for web servers."
-  shared      = true
 }
 
 # 2-1. HTTP (80번 포트) 허용 규칙
@@ -61,12 +59,11 @@ resource "openstack_networking_secgroup_rule_v2" "web_https" {
 
 
 # ==========================================
-# 3. 데이터베이스 전용 보안 그룹 (Shared) 
+# 3. 데이터베이스 전용 보안 그룹 (Admin 권한으로 전역 공유)
 # ==========================================
 resource "openstack_networking_secgroup_v2" "db_access" {
   name        = "db-access-sg"
   description = "[DB] Secure MariaDB/MySQL port(3306). Only allows traffic from Web SG."
-  shared      = true
 }
 
 # 3-1. DB (3306번 포트) 허용 규칙
