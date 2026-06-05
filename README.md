@@ -55,13 +55,13 @@ openstack-security-group/
 ```bash
 # 0. 오픈스택 서버 터미널에서 git clone or pull
 # (최초 실행 시)
-git clone [https://github.com/본인_깃허브_ID/openstack-security-group.git](https://github.com/본인_깃허브_ID/openstack-security-group.git)
+git clone https://github.com/깃허브_ID/openstack-security-group.git
 cd openstack-security-group
 # (코드가 수정되었을 시)
 git pull origin main
 
 # 1. Kolla 가상환경 진입 및 오픈스택 어드민 환경변수 로드 (로그인 정보 탑재)
-source /path/to/kolla-venv/bin/activate
+source ~/kolla-venv/bin/activate
 source ~/highcloud-admin-openrc.sh
 
 # 2. 테라폼 초기화 (오픈스택 공식 프로바이더 플러그인 자동 다운로드)
