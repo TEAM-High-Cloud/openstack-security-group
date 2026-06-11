@@ -79,7 +79,7 @@ resource "openstack_networking_secgroup_rule_v2" "db_mysql" {
 }
 
 # ==========================================
-# 4. 보안 그룹 전역 공유
+# 4. 보안 그룹 전역 공유 
 # ==========================================
 
 # 4-1. 기본 관리용 보안 그룹 공유
@@ -87,7 +87,7 @@ resource "openstack_networking_rbac_policy_v2" "share_mgmt" {
   object_type    = "security_group"
   object_id      = openstack_networking_secgroup_v2.common_mgmt.id
   action         = "access_as_shared"
-  target_project = "*" # 모든 프로젝트 방에 전역 공유하겠다는 뜻!
+  target_tenant  = "*" # 💡 target_project 대신 target_tenant 로 변경!
 }
 
 # 4-2. 웹 서비스 전용 보안 그룹 공유
@@ -95,7 +95,7 @@ resource "openstack_networking_rbac_policy_v2" "share_web" {
   object_type    = "security_group"
   object_id      = openstack_networking_secgroup_v2.web_traffic.id
   action         = "access_as_shared"
-  target_project = "*"
+  target_tenant  = "*" # 💡 target_project 대신 target_tenant 로 변경!
 }
 
 # 4-3. 데이터베이스 전용 보안 그룹 공유
@@ -103,5 +103,5 @@ resource "openstack_networking_rbac_policy_v2" "share_db" {
   object_type    = "security_group"
   object_id      = openstack_networking_secgroup_v2.db_access.id
   action         = "access_as_shared"
-  target_project = "*"
+  target_tenant  = "*" # 💡 target_project 대신 target_tenant 로 변경!
 }
