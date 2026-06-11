@@ -1,5 +1,5 @@
 # ==========================================
-# 1. 기본 관리용 보안 그룹 (Admin 권한으로 전역 공유)
+# 1. 기본 관리용 보안 그룹 
 # ==========================================
 resource "openstack_networking_secgroup_v2" "common_mgmt" {
   name        = "common-mgmt-sg"
@@ -28,7 +28,7 @@ resource "openstack_networking_secgroup_rule_v2" "mgmt_ping" {
 
 
 # ==========================================
-# 2. 웹 서비스 전용 보안 그룹 (Admin 권한으로 전역 공유)
+# 2. 웹 서비스 전용 보안 그룹
 # ==========================================
 resource "openstack_networking_secgroup_v2" "web_traffic" {
   name        = "web-traffic-sg"
@@ -59,7 +59,7 @@ resource "openstack_networking_secgroup_rule_v2" "web_https" {
 
 
 # ==========================================
-# 3. 데이터베이스 전용 보안 그룹 (Admin 권한으로 전역 공유)
+# 3. 데이터베이스 전용 보안 그룹 
 # ==========================================
 resource "openstack_networking_secgroup_v2" "db_access" {
   name        = "db-access-sg"
@@ -76,4 +76,32 @@ resource "openstack_networking_secgroup_rule_v2" "db_mysql" {
   port_range_max    = 3306
   remote_group_id   = openstack_networking_secgroup_v2.web_traffic.id # ★웹 보안 그룹 ID와 연동
   security_group_id = openstack_networking_secgroup_v2.db_access.id
+}
+
+# ==========================================
+# 4. 보안 그룹 전역 공유
+# ==========================================
+
+# 4-1. 기본 관리용 보안 그룹 공유
+resource "openstack_networking_rbac_policy_v2" "share_mgmt" {
+  object_type    = "security_group"
+  object_id      = openstack_networking_secgroup_v2.common_mgmt.id
+  action         = "access_as_shared"
+  target_project = "*" # 모든 프로젝트 방에 전역 공유하겠다는 뜻!
+}
+
+# 4-2. 웹 서비스 전용 보안 그룹 공유
+resource "openstack_networking_rbac_policy_v2" "share_web" {
+  object_type    = "security_group"
+  object_id      = openstack_networking_secgroup_v2.web_traffic.id
+  action         = "access_as_shared"
+  target_project = "*"
+}
+
+# 4-3. 데이터베이스 전용 보안 그룹 공유
+resource "openstack_networking_rbac_policy_v2" "share_db" {
+  object_type    = "security_group"
+  object_id      = openstack_networking_secgroup_v2.db_access.id
+  action         = "access_as_shared"
+  target_project = "*"
 }
